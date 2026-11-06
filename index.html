@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8065c9">
+<meta name="description" content="Your live Board Exam 2027 countdown and study tracker.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png">
+<title>Exam Buddy · Live Countdown</title>
+<style>
+:root{--ink:#292347;--muted:#77718d;--purple:#8065c9;--lav:#eee7ff;--pink:#ffe5f0;--white:#fff;--line:#e9e1f4;--green:#23866c}
+*{box-sizing:border-box}
+body{margin:0;background:#f4effb;color:var(--ink);font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.app{max-width:520px;min-height:100vh;margin:auto;background:linear-gradient(180deg,#f7f1ff 0%,#fff8fb 52%,#fff 100%);padding:22px 17px 32px}
+.top{display:flex;align-items:center;justify-content:space-between;margin:2px 2px 20px}
+.brand{font-weight:900;font-size:1.05rem;letter-spacing:-.02em}.brand span{color:var(--purple)}
+.live{font-size:.72rem;font-weight:800;color:var(--green);background:#e1f5ed;border-radius:99px;padding:7px 10px}
+.greeting{font-size:.82rem;color:var(--muted);font-weight:700}
+h1{font-size:2rem;line-height:1.05;margin:6px 0 7px;letter-spacing:-.05em}
+.datepill{display:inline-flex;gap:7px;align-items:center;background:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:99px;font-size:.82rem;font-weight:800;color:#6e628b;margin-top:7px}
+.hero{position:relative;overflow:hidden;margin:21px 0 15px;padding:20px;border-radius:25px;background:linear-gradient(135deg,#8065c9,#a98ce6 58%,#e7a8ce);color:#fff;box-shadow:0 12px 28px #8065c933}
+.hero:after{content:"✦";position:absolute;right:19px;top:8px;font-size:4rem;opacity:.2}
+.hero-label{font-size:.73rem;letter-spacing:.11em;text-transform:uppercase;font-weight:900;opacity:.9}
+.hero-subject{font-size:1.65rem;font-weight:900;margin:5px 0 0}
+.hero-date{font-size:.9rem;opacity:.92}
+.hero-count{font-size:2.7rem;font-weight:950;letter-spacing:-.06em;margin-top:14px;line-height:1}
+.hero-count small{font-size:.9rem;letter-spacing:0;font-weight:750}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:22px 2px 11px}
+.section-head h2{font-size:1.08rem;margin:0;letter-spacing:-.02em}
+.section-head span{font-size:.75rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:14px;box-shadow:0 5px 16px #49376a09;min-width:0}
+.card-top{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.subject{font-size:1rem;font-weight:900}.emoji{font-size:1.15rem}
+.examdate{font-size:.76rem;color:var(--muted);margin-top:4px}
+.days{display:inline-block;margin-top:12px;background:var(--pink);color:#814b70;border-radius:99px;padding:6px 10px;font-size:.85rem;font-weight:900}
+.days.today{background:#e2f5ec;color:#21795f}.days.passed{background:#efedf2;color:#777}
+.gap{font-size:.72rem;color:var(--muted);margin-top:8px}
+.info{margin-top:15px;padding:15px;border-radius:19px;background:#fff;border:1px solid var(--line)}
+.info strong{display:block;font-size:.92rem;margin-bottom:5px}
+.info p{margin:0;color:var(--muted);font-size:.82rem;line-height:1.45}
+.footer{text-align:center;color:#897da5;font-weight:850;margin:22px 0 4px;font-size:1.05rem}
+.install{display:none;width:100%;border:0;border-radius:15px;background:#292347;color:white;padding:13px 16px;font:inherit;font-weight:850;margin:15px 0 0}
+.install.show{display:block}
+@media(min-width:540px){body{padding:20px 0}.app{border-radius:30px;min-height:calc(100vh - 40px);box-shadow:0 15px 50px #48336a12}}
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="top"><div class="brand">✿ exam <span>buddy</span></div><div class="live">● LIVE COUNTDOWN</div></div>
+  <div class="greeting">YOUR PERSONAL STUDY TRACKER</div>
+  <h1>Board Exams<br>2027 ✨</h1>
+  <div class="datepill">📅 <span id="today">Loading date…</span></div>
+  <button class="install" id="installBtn">＋ Install Exam Buddy</button>
+  <section class="hero" aria-live="polite">
+    <div class="hero-label">Your next exam</div>
+    <div class="hero-subject" id="nextName">Loading…</div>
+    <div class="hero-date" id="nextDate"></div>
+    <div class="hero-count" id="nextCount">—</div>
+  </section>
+  <div class="section-head"><h2>All exam countdowns</h2><span>Days left update daily</span></div>
+  <section class="grid" id="cards"></section>
+  <section class="info"><strong>💡 Your exam gaps</strong><p>Physics → Chemistry: 11 days · Chemistry → English: 6 days · English → Maths: 4 days · Maths → Typo: 3 days · Typo → CS: 19 days</p></section>
+  <section class="info"><strong>🌷 Little reminder</strong><p>Use the gaps wisely: revise, practise past papers, and take proper breaks. Small steps lead to big results!</p></section>
+  <div class="footer">You’ve got this! ♡</div>
+</main>
+<script>
+const exams=[
+ {name:"Physics",date:"2027-02-16",gap:"First exam",emoji:"⚛️"},
+ {name:"Chemistry",date:"2027-02-27",gap:"11 days after Physics",emoji:"🧪"},
+ {name:"English",date:"2027-03-05",gap:"6 days after Chemistry",emoji:"📖"},
+ {name:"Maths",date:"2027-03-09",gap:"4 days after English",emoji:"➗"},
+ {name:"Typo",date:"2027-03-12",gap:"3 days after Maths",emoji:"📝"},
+ {name:"CS",date:"2027-03-31",gap:"19 days after Typo",emoji:"💻"}
+];
+function localDate(iso){const [y,m,d]=iso.split("-").map(Number);return new Date(y,m-1,d)}
+function dayStart(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function left(iso,now){return Math.round((dayStart(localDate(iso))-dayStart(now))/86400000)}
+function format(d,opts){return d.toLocaleDateString(undefined,opts)}
+function update(){
+ const now=new Date();
+ document.getElementById("today").textContent=format(now,{day:"numeric",month:"long",year:"numeric"});
+ const upcoming=exams.find(e=>left(e.date,now)>=0);
+ if(upcoming){const n=left(upcoming.date,now);document.getElementById("nextName").textContent=upcoming.name;document.getElementById("nextDate").textContent=format(localDate(upcoming.date),{weekday:"long",day:"numeric",month:"long",year:"numeric"});document.getElementById("nextCount").innerHTML=n===0?'Today! <small>🎉</small>':`${n} <small>days to go</small>`;}
+ else{document.getElementById("nextName").textContent="All exams completed";document.getElementById("nextDate").textContent="Time to celebrate!";document.getElementById("nextCount").innerHTML='Well done! <small>🎉</small>';}
+ document.getElementById("cards").innerHTML=exams.map(e=>{const n=left(e.date,now),label=n>0?`${n} days left`:n===0?"Today!":"Completed",cls=n===0?"today":n<0?"passed":"";return `<article class="card"><div class="card-top"><div class="subject">${e.name}</div><div class="emoji">${e.emoji}</div></div><div class="examdate">${format(localDate(e.date),{day:"numeric",month:"short",year:"numeric"})}</div><div class="days ${cls}">${label}</div><div class="gap">${e.gap}</div></article>`;}).join("");
+}
+update();setInterval(update,60000);
+let deferredPrompt;const installBtn=document.getElementById("installBtn");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;installBtn.classList.add("show");});
+installBtn.addEventListener("click",async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.classList.remove("show");});
+window.addEventListener("appinstalled",()=>installBtn.classList.remove("show"));
+if("serviceWorker" in navigator && (location.protocol==="https:"||location.hostname==="localhost")){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}
+</script>
+</body>
+</html>

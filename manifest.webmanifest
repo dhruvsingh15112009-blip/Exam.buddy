@@ -1,0 +1,32 @@
+{
+  "id": "./",
+  "name": "Exam Buddy \u2013 Live Board Exam Countdown",
+  "short_name": "Exam Buddy",
+  "description": "Live countdown for your Board Exam 2027 datesheet.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f1ff",
+  "theme_color": "#8065c9",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
